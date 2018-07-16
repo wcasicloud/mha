@@ -1,0 +1,26 @@
+---
+- name: Create mha_workdir
+  file: path={{ mha_workdir }}  state=directory
+- name: Copy  install_perl scripts
+  copy: src=files/install_perl.sh  dest={{ mha_workdir }}/install_perl.sh mode=a+x
+
+- name: Install perl
+  shell: {{ mha_workdir }}/install_perl.sh
+
+- name:  Copy mha Package
+  synchronize: src=files/mha  dest=/root
+
+- name: Install mha-manager
+  shell: chdir=/root/mha  yum -y install mha-*.rpm
+
+- name: Copy mha-config
+  template: src=templates/db.cnf.j2  dest={{ mha_workdir }}/db.cnf
+
+- name: Copy master_ip_failover scripts
+  template: src=templates/master_ip_failover.j2  dest={{ mha_user }}/master_ip_failover
+
+- name: Copy master_ip_online_change scripts
+  template: src=templates/master_ip_online_change.j2 dest={{ mha_workdir }}/master_ip_online_change
+
+- name: Start mha-manager
+  shell: nohup masterha_manager  --conf={{mha_workdir}}/db.cnf > {{mha_workdir}}/master.log 2>&1 &

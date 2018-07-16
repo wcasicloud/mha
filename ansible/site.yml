@@ -1,0 +1,4 @@
+- hosts: mha_manager
+  roles:
+    - role: mha-manager
+    

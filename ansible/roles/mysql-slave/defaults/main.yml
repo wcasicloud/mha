@@ -1,0 +1,15 @@
+---
+mysql_data_dir: /data/mysql
+mysql_repo_url_prefix: http://10.153.40.212/repo/mysql
+mysql_name: mysql-5.7.18-linux-glibc2.5-x86_64.tar.gz
+mysql_port: 3306
+mysql_install_dir:  /usr/share/mysql
+mysql_sock: /var/lib/mysql/mysql.sock
+mysql_uid:  27
+mysql_gid:  27
+mysql_tar_dir:   mysql-5.7.18-linux-glibc2.5-x86_64
+mysql_down_dir: /opt/mysql
+server_id: 2
+mysql_logs_dir: /data/mysql/logs
+innodb_buffer_pool_size: 8G
+sort_buffer_size: 4M

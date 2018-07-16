@@ -1,0 +1,27 @@
+[server default]
+user={{ mha_user }}
+password={{ mha_password }}
+manager_workdir={{ mha_workdir }}
+manager_log={{ mha_workdir }}/manager.log
+remote_workdir={{ mha_workdir }}
+ssh_user=root
+repl_user={{ repl_user }}
+repl_password={{ repl_password }}
+ping_interval=1
+master_ip_failover_script={{ mha_workdir}}/master_ip_failover
+master_ip_online_change_script="{{ mha_workdir }}/master_ip_online_change"
+
+[server1]
+hostname=10.153.40.204
+master_binlog_dir={{ master_binlog_dir }}
+candidate_master=1
+
+[server2]
+hostname=10.153.40.205
+master_binlog_dir={{ master_binlog_dir }}
+candidate_master=1
+
+[server3]
+hostname=10.153.40.206
+master_binlog_dir={{ master_binlog_dir }}
+no_master=1
