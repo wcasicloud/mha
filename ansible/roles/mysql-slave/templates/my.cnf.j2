@@ -12,6 +12,23 @@ log-bin={{ mysql_logs_dir }}/bin-log
 relay-log={{ mysql_logs_dir }}/relay-log
 relay_log_purge=0
 read_only=1
+expire_logs_days=15
+
+rpl_semi_sync_master_enabled = 1
+rpl_semi_sync_slave_enabled = 1
+slave-parallel-type=LOGICAL_CLOCK
+slave-parallel-workers=16
+master_info_repository=TABLE
+relay_log_info_repository=TABLE
+relay_log_recovery=ON
+
+gtid_mode=ON
+enforce_gtid_consistency=ON
+
+slow_query_log = 1
+long_query_time = 2
+log_queries_not_using_indexes = 0
+slow_query_log_file ={{ mysql_logs_dir }}/slow.log
 
 #### memory configure
 innodb_buffer_pool_size={{ innodb_buffer_pool_size }}

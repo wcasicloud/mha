@@ -22,5 +22,8 @@
 - name: Copy master_ip_online_change scripts
   template: src=templates/master_ip_online_change.j2 dest={{ mha_workdir }}/master_ip_online_change
 
+- name: Copy send_report scripts
+  template: src=templates/mha_send_report.py.j2 dest={{ mha_workdir }}/mha_send_report.py
+  
 - name: Start mha-manager
   shell: nohup masterha_manager  --conf={{mha_workdir}}/db.cnf > {{mha_workdir}}/master.log 2>&1 &

@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import re
+import datetime
+import json
+import subprocess
+import requests
+import time
+
+
+# `echo "$1" | awk -F = '{print $2}'`
+orig_master_host = sys.argv[1].split('=')[1]
+# `echo "$2" | awk -F = '{print $2}'`
+new_master_host = sys.argv[2].split('=')[1]
+# `echo "$3" | awk -F = '{print $2}'`
+new_slave_hosts = sys.argv[3].split("=")[1]
+# `echo "$4" | awk -F = '{print $2}'`
+subject = sys.argv[4].split("=")[1]
+# `echo "$5" | awk -F = '{print $2}'`
+body = sys.argv[5].split("=")[1]
+mha_log_file = '/data/masterha/app2/manager.log'
+
+
+def to_weixin(orig_master_host, new_master_host, new_slave_hosts, subject, body):
+    corpid = "wx5df6xxxx38675"
+    secret = "_qqlL4zS9NxxxxxxxxVSIsLSDyP0NU"
+    token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
+    playload = {'corpid': corpid, 'corpsecret': secret}
+    r = requests.get(token_url, params=playload)
+    access_token = r.json()['access_token']
+    cmd = "tac /data/mha/app2/manager.log | sed -n 2p | grep 'successfully'"
+    c = subprocess.run(cmd, shell=True)
+    if c.returncode == 0:
+        message = u"MHA %s 主从切换成功 \n master: %s --> %s \n %s \n 当前从库：%s" \
+              % (subject, orig_master_host, new_master_host, body, new_slave_hosts)
+    else:
+        message = u"MHA %s 主从切换失败 \n master: %s --> %s \n %s" % (subject, orig_master_host, new_master_host, body)
+    data = {"toparty": "4", "msgtype": "text", "agentid": 1000003, "text": {"content": message}}
+    send_message_url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + access_token
+    send_message = requests.post(send_message_url, data=json.dumps(data))
+    if send_message != 'ok':
+        pass
+
+
+if __name__ == '__main__':
+    to_weixin(orig_master_host, new_master_host, new_slave_hosts, subject, body)
