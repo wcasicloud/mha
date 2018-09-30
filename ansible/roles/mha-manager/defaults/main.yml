@@ -1,7 +1,0 @@
-vip: 10.153.40.163/24
-mha_user: mhaadmin
-mha_password: J+wHfDaRs3a
-repl_user: repl_user
-repl_password: kyDXUBAwlPav
-mha_workdir: /data/masterha/app1
-master_binlog_dir: /data/mysql/logs
